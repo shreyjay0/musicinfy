@@ -8,7 +8,7 @@ import pandas as pd
 import styless
 # headers
 headers = {
-    'Authorization': 'Bearer_Token_Here'
+    'Authorization': 'Bearer Token_HERE'
   }
 
 #globally used 
@@ -21,7 +21,7 @@ found = []
 links = []
 added_tracks = []
 #musicinfy
-musicinfy_full =""""
+musicinfy_full ="""
 
                   ============ MUSICINFY =============
 
@@ -168,6 +168,22 @@ def fetch_song_link(name,formatted_name):
     prints(styless.red+"Error "+str(res.status_code)+ ": "+res.reason)
     exit()
 
+=
+#gets uri for post  request
+def get_uri(link):
+  chk = "spotify:track:"+link.split("/")[len(link.split("/"))-1]
+  return chk
+
+#add to spotify playlist by link
+def add_by_link(link):
+  url = "https://api.spotify.com/v1/playlists/"+created_playlist_id+"/tracks?uris="+get_uri(link)
+  res = requests.request("POST", url, headers=headers, data={})
+  if res.status_code not in list(range(200,206)):
+    prints(styless.red+"Error "+str(res.status_code)+ ": "+res.reason+ ". Track wasn't added to playlist.")
+    return False
+  else:
+    return True
+
 #adding the tracks to the created playlist
 def add_to_playlist():
   clear_screen()
@@ -188,10 +204,13 @@ def add_to_playlist():
       added = add_by_link(link)
       if added:
         added_tracks.append(link)
-        prints(formatted_name + " was just added to your playlist. Onto next one now")
+        prints(formatted_name + " was just added to your playlist. Onto the next one now")
       else: 
         prints(formatted_name+" could not be added to your playlist.")
-  prints("Playlist update successful!\nYou can now enjoy your old tracks and get nostalgic. \nThank you for using me.")
+  prints("Playlist update successful!")
+  time.sleep(0.2)
+  clear_screen()
+  prints("You can now enjoy your old tracks and get nostalgic. \nThank you for using me.")
 
 clear_screen()
 user_data = get_profile()
@@ -200,7 +219,7 @@ playlist_name , desc ,public = playlist_details()
 created_playlist_id = create_playlist()
 files = fetch_file_names()
 add_to_playlist()
-i=0
-for link in links:
-  i+=1
-  print(str(i)+ " : "+link) 
+# i=0
+# for link in links:
+#   i+=1
+#   print(str(i)+ " : "+link) 
