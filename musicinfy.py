@@ -60,7 +60,7 @@ def playlist_details():
   public = True
   prints(musicinfy_full)
   prints(styless.green + styless.bold + "Hey " + user_data["display_name"] +"! Welcome to Musicinfy. We need some details for the playlist that you wanna create."+ styless.u_end)
-  prints(styless.yellow+ styless.u_yellow +"Note that anything other than (yes/no), (y/n) [not case sesnsitive] would be considered a yes."+styless.u_end)
+  prints(styless.yellow+ styless.u_yellow +"Note that anything other than (yes/no), (y/n) [not case sesnsitive] would be considered a yes. You can simply press enter if you wish to answer yes."+styless.u_end)
   name_confirm = False
   while (not name_confirm):
     playlist_name = ""
@@ -219,7 +219,3 @@ playlist_name , desc ,public = playlist_details()
 created_playlist_id = create_playlist()
 files = fetch_file_names()
 add_to_playlist()
-# i=0
-# for link in links:
-#   i+=1
-#   print(str(i)+ " : "+link) 
