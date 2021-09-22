@@ -8,7 +8,7 @@ import pandas as pd
 import styless
 # headers
 headers = {
-    'Authorization': 'Bearer Token_HERE'
+    'Authorization': 'Bearer BQCBDrw1wNe3tp85hhqoJ-be-i-RnscBH9xioyau5gKmuDtp4JAwtav1GiYwUR9upH833ii7RYkAsZWIZWAPWwgpLOmdsCHRdYB90RELLLltkwlu_UtMX7XoStON-yn9MOCLNN81BXSKmFPcLoaTutVh2cPw_dbI6sH7mIfQ4YGlRGqvqckrmsJMpT9f0sSNOzpp_ILkra2xtO2fdhvjJW2Aqn1ppPjma9ix1Vr6TZFGcg'
   }
 
 #globally used 
@@ -60,7 +60,7 @@ def playlist_details():
   public = True
   prints(musicinfy_full)
   prints(styless.green + styless.bold + "Hey " + user_data["display_name"] +"! Welcome to Musicinfy. We need some details for the playlist that you wanna create."+ styless.u_end)
-  prints(styless.yellow+ styless.u_yellow +"Note that anything other than (yes/no), (y/n) [not case sesnsitive] would be considered a yes. You can simply press enter if you wish to answer yes."+styless.u_end)
+  prints(styless.yellow+ styless.u_yellow +"Note that anything other than (yes/no), (y/n) [not case sesnsitive] would be considered a yes."+styless.u_end)
   name_confirm = False
   while (not name_confirm):
     playlist_name = ""
@@ -168,7 +168,16 @@ def fetch_song_link(name,formatted_name):
     prints(styless.red+"Error "+str(res.status_code)+ ": "+res.reason)
     exit()
 
-=
+#exports songs 
+def export_report_for_found_songs():
+  merged = list(zip(found,links))
+  df = pd.DataFrame(merged, columns=["Name","Link to spotify"])
+  df.to_csv("success_report.csv")
+
+#list of not found
+def dump_unfound():
+  df = pd.DataFrame(notfound, columns=["Name"])
+  df.to_csv("dump.csv")
 #gets uri for post  request
 def get_uri(link):
   chk = "spotify:track:"+link.split("/")[len(link.split("/"))-1]
@@ -208,6 +217,12 @@ def add_to_playlist():
       else: 
         prints(formatted_name+" could not be added to your playlist.")
   prints("Playlist update successful!")
+  time.sleep(0.6)
+  prints("Exporting information as csv...")
+  clear_screen()
+  export_report_for_found_songs()
+  dump_unfound()
+  prints("Export successful.")
   time.sleep(0.2)
   clear_screen()
   prints("You can now enjoy your old tracks and get nostalgic. \nThank you for using me.")
@@ -219,3 +234,7 @@ playlist_name , desc ,public = playlist_details()
 created_playlist_id = create_playlist()
 files = fetch_file_names()
 add_to_playlist()
+# i=0
+# for link in links:
+#   i+=1
+#   print(str(i)+ " : "+link) 
