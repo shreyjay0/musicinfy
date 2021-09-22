@@ -8,8 +8,7 @@ import pandas as pd
 import styless
 # headers
 headers = {
-    'Authorization': 'Bearer BQCBDrw1wNe3tp85hhqoJ-be-i-RnscBH9xioyau5gKmuDtp4JAwtav1GiYwUR9upH833ii7RYkAsZWIZWAPWwgpLOmdsCHRdYB90RELLLltkwlu_UtMX7XoStON-yn9MOCLNN81BXSKmFPcLoaTutVh2cPw_dbI6sH7mIfQ4YGlRGqvqckrmsJMpT9f0sSNOzpp_ILkra2xtO2fdhvjJW2Aqn1ppPjma9ix1Vr6TZFGcg'
-  }
+    'Authorization': 'Bearer Token_HERE'  }
 
 #globally used 
 opt = ["n","no"]
