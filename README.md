@@ -1,6 +1,6 @@
 # musicinfy
-![image](https://user-images.githubusercontent.com/42074753/134774875-00c9d8d7-36fd-492e-a51f-ba077e4aa4ff.png)
 
+![image](https://user-images.githubusercontent.com/42074753/134781263-fdd200a0-d873-4ed5-85e8-178640d4f58b.png)
 
 
 Get all your songs from your device to spotify as a playlist.
