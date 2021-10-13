@@ -12,7 +12,7 @@ user_data = {}
 supported_formats = [".mp3",".mp4",".wav",".m4a"]
 all_files = []
 notfound = []
-found = []
+found = [[],[],[]]
 links = []
 added_tracks = []
 #musicinfy
@@ -46,9 +46,13 @@ def redirect_notice():
   prints(col.purple+"""
   To get started we need you to allow us to make changes to your spotify 
   account (includes playlist creation, updation and deletion).
-  And dont't worry this data isn't stored anywhere. 
+  And dont't worry this data isn't stored anywhere. Once you allow
+  access you can return to the cli.
 
   You will now be redirected to spotify authentication page.""")
+  if input("Do you wish to continue? (Y/N) ").lower() in opt:
+    exit("Bye. Have a good day!")
+  prints("Opening page in 5 seconds...")
 
 #get profile 
 def get_profile():
@@ -144,6 +148,14 @@ def format_name(name):
 #   return res["tracks"].items[0].href 
 #   #check for tracks keyword in url
 
+#adding to array 
+def append_found_info(data):
+  found[1].append(data["name"])
+  artist_names = []
+  for artist in data["artists"]:
+    artist_names.append(artist["name"])
+  found[2].append(",".join(artist_names))
+
 
 #searches for the song via api
 def fetch_song_link(name,formatted_name):
@@ -161,11 +173,14 @@ def fetch_song_link(name,formatted_name):
     if not res.json()["tracks"]["items"]:
       notfound.append(name)
       files.remove(name)
+    elif res.json()["tracks"]["items"][0]["external_urls"]["spotify"] in links:
+      prints("Track already exists")
     else:
       prints("Track found.")
       clear_screen()
-      found.append(name)
-      all_files.append(formatted_name)
+      found[0].append(name)
+      append_found_info(res.json()["tracks"]["items"][0])
+      all_files.append(res.json()["tracks"]["items"][0]["name"])
       # print(res.json()["tracks"]["items"][0]["href"])
       link = res.json()["tracks"]["items"][0]["external_urls"]["spotify"]
       links.append(link)
@@ -176,8 +191,8 @@ def fetch_song_link(name,formatted_name):
 
 #exports songs 
 def export_report_for_found_songs():
-  merged = list(zip(found,links))
-  df = pd.DataFrame(merged, columns=["Name","Link to spotify"])
+  merged = list(zip(found[0],found[1],found[2],links))
+  df = pd.DataFrame(merged, columns=["Filename","Name","Artist names","Link to spotify"])
   df.to_csv("success_report.csv")
 
 #list of not found
@@ -243,7 +258,6 @@ headers = {
   }
 
 clear_screen()
-print(auth_token)
 time.sleep(5)
 user_data = get_profile()
 id = user_data["id"]
@@ -251,7 +265,3 @@ playlist_name , desc ,public = playlist_details()
 created_playlist_id = create_playlist()
 files = fetch_file_names()
 add_to_playlist()
-# i=0
-# for link in links:
-#   i+=1
-#   print(str(i)+ " : "+link) 
