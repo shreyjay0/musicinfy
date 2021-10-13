@@ -1,5 +1,4 @@
 import os, time,sys
-from typing import OrderedDict
 import requests,json
 import pandas as pd
 from t import *
@@ -136,7 +135,7 @@ def fetch_file_names():
 
 #format the retrieved file name into meaningful search terms
 def format_name(name):
-  arr_name_bits = name[:-4].replace(" ","_").replace(".","").split("_")
+  arr_name_bits = name[:-4].replace(" ","_").replace(".","").replace("%","").split("_")
   tmp = arr_name_bits
   arr_name_bits = [b for b in tmp if not b.isnumeric()]
   formatted_name = " ".join(arr_name_bits)
